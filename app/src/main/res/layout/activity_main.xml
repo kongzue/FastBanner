@@ -7,10 +7,39 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="SimpleBanner"
+        android:textColor="#000"
+        android:textSize="18dp"/>
+
     <com.kongzue.basebanner.SimpleBanner
         android:id="@+id/simpleBanner"
         android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:background="#0D000000"
-        android:layout_height="200dp"></com.kongzue.basebanner.SimpleBanner>
+        app:indicatorFocus="@drawable/rect_red_alpha90"
+        app:indicatorGravity="center"
+        app:indicatorNormal="@drawable/rect_red_alpha50"></com.kongzue.basebanner.SimpleBanner>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="CustomBanner"
+        android:textColor="#000"
+        android:textSize="18dp"/>
+
+    <com.kongzue.basebanner.CustomBanner
+        android:id="@+id/customBanner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#0D000000"
+        app:indicatorFocus="@drawable/rect_red_alpha90"
+        app:indicatorGravity="right"
+        app:indicatorNormal="@drawable/rect_red_alpha50"></com.kongzue.basebanner.CustomBanner>
 
 </LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Banner">
+        <attr name="indicatorFocus" format="reference"/>
+        <attr name="indicatorNormal" format="reference"/>
+        <attr name="indicatorGravity">
+            <enum name="center" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+        <attr name="indicatorMargin" format="dimension"/>
+        <attr name="delay" format="integer"/>
+        <attr name="period" format="integer"/>
+        <attr name="autoPlay" format="boolean"/>
+    </declare-styleable>
+</resources>

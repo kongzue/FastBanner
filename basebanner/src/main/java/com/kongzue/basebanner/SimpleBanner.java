@@ -1,6 +1,7 @@
 package com.kongzue.basebanner;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.view.PagerAdapter;
@@ -40,6 +41,9 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private int indicatorGravity = GRAVITY_CENTER;                          //指示器对齐方式
     private int indicatorMargin = 15;                                       //指示器与边框的距离（单位：dp）
     
+    private int indicatorFocusResId;
+    private int indicatorNormalResId;
+    
     private int DELAY = 4000;                                               //自动轮播延时（单位：毫秒）
     private int PERIOD = 4000;                                              //自动轮播周期（单位：毫秒）
     
@@ -69,13 +73,26 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     public SimpleBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        loadAttrs(attrs);
         init();
     }
     
     public SimpleBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        loadAttrs(attrs);
         init();
+    }
+    
+    private void loadAttrs(AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
+        indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
+        indicatorGravity = typedArray.getInt(R.styleable.Banner_indicatorGravity, GRAVITY_CENTER);
+        indicatorMargin = typedArray.getInt(R.styleable.Banner_indicatorMargin, 15);
+        DELAY = typedArray.getInt(R.styleable.Banner_delay, 4000);
+        PERIOD = typedArray.getInt(R.styleable.Banner_period, 4000);
+        autoPlay = typedArray.getBoolean(R.styleable.Banner_autoPlay, true);
     }
     
     private void init() {
@@ -161,15 +178,15 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         switch (indicatorGravity) {
             case GRAVITY_CENTER:
                 lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                lp.setMargins(0, 0, 0, dip2px(15));
+                lp.setMargins(0, 0, 0, dip2px(indicatorMargin));
                 break;
             case GRAVITY_LEFT:
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                lp.setMargins(dip2px(18), 0, 0, dip2px(15));
+                lp.setMargins(dip2px(indicatorMargin), 0, 0, dip2px(indicatorMargin));
                 break;
             case GRAVITY_RIGHT:
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                lp.setMargins(0, 0, dip2px(18), dip2px(15));
+                lp.setMargins(0, 0, dip2px(indicatorMargin), dip2px(indicatorMargin));
                 break;
         }
         indicatorBox.setLayoutParams(lp);
@@ -182,7 +199,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(dip2px(8), dip2px(8));
             itemLp.setMargins(dip2px(10), 0, 0, 0);
             imageView.setLayoutParams(itemLp);
-            imageView.setImageResource(R.drawable.rect_white_alpha50);
+            imageView.setImageResource(indicatorNormalResId);
             indicatorImageViews.add(imageView);
             indicatorBox.addView(imageView);
         }
@@ -195,9 +212,9 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             if (index < 0) index = indicatorImageViews.size() - 1;
             if (index >= indicatorImageViews.size()) index = 0;
             for (ImageView imageView : indicatorImageViews) {
-                imageView.setImageResource(R.drawable.rect_white_alpha50);
+                imageView.setImageResource(indicatorNormalResId);
             }
-            indicatorImageViews.get(index).setImageResource(R.drawable.rect_white_alpha90);
+            indicatorImageViews.get(index).setImageResource(indicatorFocusResId);
         }
     }
     
