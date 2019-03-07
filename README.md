@@ -158,7 +158,7 @@ customBanner.setData(bannerData, R.layout.item_banner, new CustomBanner.BindView
 
 ## 开源协议
 ```
-Copyright Tabbar
+Copyright FastBanner
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
