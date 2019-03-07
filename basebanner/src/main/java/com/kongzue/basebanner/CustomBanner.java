@@ -109,7 +109,7 @@ public class CustomBanner<D> extends RelativeLayout {
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
         indicatorGravity = typedArray.getInt(R.styleable.Banner_indicatorGravity, GRAVITY_CENTER);
-        indicatorMargin = typedArray.getInt(R.styleable.Banner_indicatorMargin, 15);
+        indicatorMargin = typedArray.getDimensionPixelOffset(R.styleable.Banner_indicatorMargin, dip2px(15));
         DELAY = typedArray.getInt(R.styleable.Banner_delay, 4000);
         PERIOD = typedArray.getInt(R.styleable.Banner_period, 4000);
         autoPlay = typedArray.getBoolean(R.styleable.Banner_autoPlay, true);
@@ -183,15 +183,15 @@ public class CustomBanner<D> extends RelativeLayout {
         switch (indicatorGravity) {
             case GRAVITY_CENTER:
                 lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                lp.setMargins(0, 0, 0, dip2px(indicatorMargin));
+                lp.setMargins(0, 0, 0, indicatorMargin);
                 break;
             case GRAVITY_LEFT:
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                lp.setMargins(dip2px(indicatorMargin), 0, 0, dip2px(indicatorMargin));
+                lp.setMargins(indicatorMargin, 0, 0, indicatorMargin);
                 break;
             case GRAVITY_RIGHT:
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                lp.setMargins(0, 0, dip2px(indicatorMargin), dip2px(indicatorMargin));
+                lp.setMargins(0, 0, indicatorMargin, indicatorMargin);
                 break;
         }
         indicatorBox.setLayoutParams(lp);
@@ -312,7 +312,7 @@ public class CustomBanner<D> extends RelativeLayout {
         return this;
     }
     
-    public CustomBanner setIndicatorMargin(int indicatorMargin) {
+    public CustomBanner setIndicatorMargin(int indicatorMarginInPx) {
         this.indicatorMargin = indicatorMargin;
         return this;
     }

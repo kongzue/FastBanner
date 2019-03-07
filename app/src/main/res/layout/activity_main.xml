@@ -13,9 +13,9 @@
         android:padding="15dp"
         android:text="SimpleBanner"
         android:textColor="#000"
-        android:textSize="18dp"/>
+        android:textSize="18dp" />
 
-    <com.kongzue.basebanner.SimpleBanner
+    <com.kongzue.basebanner.SimpleBanner xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/simpleBanner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -31,7 +31,7 @@
         android:padding="15dp"
         android:text="CustomBanner"
         android:textColor="#000"
-        android:textSize="18dp"/>
+        android:textSize="18dp" />
 
     <com.kongzue.basebanner.CustomBanner
         android:id="@+id/customBanner"
