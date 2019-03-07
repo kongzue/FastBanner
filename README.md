@@ -4,7 +4,7 @@ Kongzue FastBanner是一款快速创建轮播图的组件，仅需要简单配�
 <a href="https://github.com/kongzue/FastBanner/">
 <img src="https://img.shields.io/badge/FastBanner-1.0.1-green.svg" alt="Kongzue Tabbar">
 </a>
-<a href="https://bintray.com/myzchh/maven/Banner,1.0.1/link">
+<a href="https://bintray.com/myzchh/maven/Banner/1.0.1/link">
 <img src="https://img.shields.io/badge/Maven-1.0.1-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
