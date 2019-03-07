@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         data.put("tip2","距离500M 1680人光顾");
         data.put("img","http://kongzue.com/test/fs/3.jpg");
         bannerData.add(data);
-        customBanner.setData(bannerData, R.layout.item_banner, new CustomBanner.BindView() {
+        customBanner.setData(bannerData, R.layout.item_banner, new CustomBanner.BindView<Map<String,String>>() {
             @Override
-            public void bind(Map<String, Object> data, View rootView) {
+            public void bind(Map<String, String> data, View rootView) {
                 SimpleDraweeView imgBkg = rootView.findViewById(R.id.img_bkg);
                 TextView txtTitle = rootView.findViewById(R.id.txt_title);
                 TextView txtAddress = rootView.findViewById(R.id.txt_address);

@@ -29,7 +29,7 @@ import java.util.TimerTask;
  * Mail: myzcxhh@live.cn
  * CreateTime: 2019/3/6 12:50
  */
-public class CustomBanner extends RelativeLayout {
+public class CustomBanner<D> extends RelativeLayout {
     
     public static final int GRAVITY_CENTER = 0;                             //居中
     public static final int GRAVITY_LEFT = 1;                               //居左
@@ -49,20 +49,20 @@ public class CustomBanner extends RelativeLayout {
     
     private Context context;
     private ViewPager viewPager;
-    private List<Map<String, Object>> datas;
+    private List<D> datas;
     private LinearLayout indicatorBox;
     private int customLayoutResId;                                            //用户自定义布局资源id
     private BindView bindView;                                              //布局组件绑定器
     
     //使用以下方法启动CustomBanner
-    public void setData(List<Map<String, Object>> datas, int layoutId, BindView bindView) {
+    public void setData(List<D> datas, int layoutId, BindView bindView) {
         this.customLayoutResId = layoutId;
         this.datas = datas;
         this.bindView = bindView;
         init();
     }
     
-    public void setData(List<Map<String, Object>> datas) {
+    public void setData(List<D> datas) {
         this.datas = datas;
         this.bindView = bindView;
         init();
@@ -122,8 +122,8 @@ public class CustomBanner extends RelativeLayout {
     private void initPages() {
         views = new ArrayList<>();
         addItem(datas.get(datas.size() - 1));
-        for (Map<String, Object> map : datas) {
-            addItem(map);
+        for (D d : datas) {
+            addItem(d);
         }
         addItem(datas.get(0));
         bannerPagerAdapter = new BannerPagerAdapter(views);
@@ -223,7 +223,7 @@ public class CustomBanner extends RelativeLayout {
         }
     }
     
-    private void addItem(Map<String, Object> data) {
+    private void addItem(D data) {
         View item = LayoutInflater.from(context).inflate(customLayoutResId, null, false);;
         if (item != null) {
             bindView.bind(data, item);
@@ -303,8 +303,8 @@ public class CustomBanner extends RelativeLayout {
         return this;
     }
     
-    public interface BindView {
-        void bind(Map<String, Object> data, View rootView);
+    public interface BindView<D> {
+        void bind(D data, View rootView);
     }
     
     public CustomBanner setIndicatorGravity(int indicatorGravity) {

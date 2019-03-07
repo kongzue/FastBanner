@@ -56,7 +56,6 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private List<String> imageUrls;
     private LinearLayout indicatorBox;
     private BindData<V> bindData;                                                  //数据绑定器
-    private V imageView;
     
     public void setData(List<String> imageUrls, BindData<V> bindData) {
         this.imageUrls = imageUrls;
