@@ -20,7 +20,7 @@ Demo预览图如下：
 
 Demo下载地址：
 
-![点击下载](https://fir.im/fasebanner)
+[点击下载](https://fir.im/fasebanner)
 
 ## 优势
 
@@ -112,7 +112,7 @@ simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
 
 2) 准备一个内容布局 item_banner.xml 
 
-可查看：![范例代码](https://github.com/kongzue/FastBanner/blob/master/app/src/main/res/layout/item_banner.xml)
+可查看：[范例代码](https://github.com/kongzue/FastBanner/blob/master/app/src/main/res/layout/item_banner.xml)
 
 3) 使用代码创建并绑定数据
 ```
