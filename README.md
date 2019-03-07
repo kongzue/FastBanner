@@ -72,9 +72,9 @@ autoPlay  | 自动播放  | true
 
 3) 代码中设置要轮播的数据
 
-FastBanner 并不自带图片显示框架，您可以自行选择 Fresco 或者 Glide。
+FastBanner 并不自带图片显示框架，您可以自行选择 Fresco、Glide 或其他框架。
 
-FastBanner 要通过代码来设置轮播数据，方法很简单，这里以 Fresco 距离：
+FastBanner 要通过代码来设置轮播数据，方法很简单，这里以 Fresco 举例：
 ```
 //准备你的数据
 List<String> imageUrls = new ArrayList<>();
