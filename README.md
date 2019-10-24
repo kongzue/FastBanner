@@ -85,7 +85,7 @@ imageUrls.add("http://example.com/test/fs/3.jpg");
 //绑定数据
 simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
     @Override
-    public void bind(String url, SimpleDraweeView imageView) {
+    public void bind(String url, SimpleDraweeView imageView, int index) {
         imageView.setImageURI(url);
     }
 });
@@ -140,7 +140,7 @@ bannerData.add(data);
 //绑定数据
 customBanner.setData(bannerData, R.layout.item_banner, new CustomBanner.BindView<Map<String,String>>() {
     @Override
-    public void bind(Map<String, String> data, View rootView) {
+    public void bind(Map<String, String> data, View rootView, int index) {
         SimpleDraweeView imgBkg = rootView.findViewById(R.id.img_bkg);
         TextView txtTitle = rootView.findViewById(R.id.txt_title);
         TextView txtAddress = rootView.findViewById(R.id.txt_address);
@@ -174,6 +174,9 @@ limitations under the License.
 ```
 
 ## 更新日志
+v1.0.2:
+- 新增回调参数 index，该值为数据下标；
+
 v1.0.1:
 - 全新发布；
 

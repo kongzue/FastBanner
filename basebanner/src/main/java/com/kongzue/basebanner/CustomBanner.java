@@ -121,11 +121,13 @@ public class CustomBanner<D> extends RelativeLayout {
     
     private void initPages() {
         views = new ArrayList<>();
-        addItem(datas.get(datas.size() - 1));
+        addItem(datas.get(datas.size() - 1), datas.size() - 1);
+        int i = 0;
         for (D d : datas) {
-            addItem(d);
+            addItem(d, i);
+            i++;
         }
-        addItem(datas.get(0));
+        addItem(datas.get(0), 0);
         bannerPagerAdapter = new BannerPagerAdapter(views);
         viewPager.setAdapter(bannerPagerAdapter);
         
@@ -223,10 +225,10 @@ public class CustomBanner<D> extends RelativeLayout {
         }
     }
     
-    private void addItem(D data) {
-        View item = LayoutInflater.from(context).inflate(customLayoutResId, null, false);;
+    private void addItem(D data, int index) {
+        View item = LayoutInflater.from(context).inflate(customLayoutResId, null, false);
         if (item != null) {
-            bindView.bind(data, item);
+            bindView.bind(data, item, index);
             views.add(item);
         }
     }
@@ -304,7 +306,7 @@ public class CustomBanner<D> extends RelativeLayout {
     }
     
     public interface BindView<D> {
-        void bind(D data, View rootView);
+        void bind(D data, View rootView, int index);
     }
     
     public CustomBanner setIndicatorGravity(int indicatorGravity) {

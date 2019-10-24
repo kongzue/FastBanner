@@ -115,11 +115,13 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private void initPages() {
         views = new ArrayList<>();
-        addItem(imageUrls.get(imageUrls.size() - 1));
+        addItem(imageUrls.get(imageUrls.size() - 1),imageUrls.size() - 1);
+        int i=0;
         for (String url : imageUrls) {
-            addItem(url);
+            addItem(url,i);
+            i++;
         }
-        addItem(imageUrls.get(0));
+        addItem(imageUrls.get(0),0);
         bannerPagerAdapter = new BannerPagerAdapter(views);
         viewPager.setAdapter(bannerPagerAdapter);
         
@@ -217,7 +219,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         }
     }
     
-    private void addItem(String url) {
+    private void addItem(String url,int index) {
         V item;
         try {
             Constructor con = bindData.getEntityClass().getConstructor(Context.class);
@@ -227,7 +229,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             return;
         }
         if (item != null) {
-            bindData.bind(url, item);
+            bindData.bind(url, item,index);
             views.add(item);
         }
     }
@@ -301,7 +303,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public abstract static class BindData<V> {
         
-        public abstract void bind(String url, V imageView);
+        public abstract void bind(String url, V imageView,int index);
         
         public Class<V> getEntityClass() {
             Type type = getClass().getGenericSuperclass();
