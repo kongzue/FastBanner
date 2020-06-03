@@ -20,7 +20,7 @@ Demo预览图如下：
 
 Demo下载地址：
 
-[点击下载](https://fir.im/fasebanner)
+[点击下载](http://beta.kongzue.com/fasebanner)
 
 ## 优势
 
