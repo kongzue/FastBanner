@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Banner">
+        <attr name="indicatorVisibility" format="boolean"/>
         <attr name="indicatorFocus" format="reference"/>
         <attr name="indicatorNormal" format="reference"/>
         <attr name="indicatorGravity">

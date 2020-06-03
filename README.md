@@ -2,10 +2,10 @@
 Kongzue FastBanner是一款快速创建轮播图的组件，仅需要简单配置即可满足绝大多数需要使用轮播图的场景。
 
 <a href="https://github.com/kongzue/FastBanner/">
-<img src="https://img.shields.io/badge/FastBanner-1.0.1-green.svg" alt="Kongzue Tabbar">
+<img src="https://img.shields.io/badge/FastBanner-1.0.3-green.svg" alt="Kongzue Tabbar">
 </a>
-<a href="https://bintray.com/myzchh/maven/Banner/1.0.1/link">
-<img src="https://img.shields.io/badge/Maven-1.0.1-blue.svg" alt="Maven">
+<a href="https://bintray.com/myzchh/maven/Banner/1.0.3/link">
+<img src="https://img.shields.io/badge/Maven-1.0.3-blue.svg" alt="Maven">
 </a>
 <a href="http://www.apache.org/licenses/LICENSE-2.0">
 <img src="https://img.shields.io/badge/License-Apache%202.0-red.svg" alt="License">
@@ -36,14 +36,14 @@ Maven仓库：
 <dependency>
   <groupId>com.kongzue.banner</groupId>
   <artifactId>basebanner</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.3</version>
   <type>pom</type>
 </dependency>
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.banner:basebanner:1.0.1'
+implementation 'com.kongzue.banner:basebanner:1.0.3'
 ```
 
 2) 从XML布局文件创建：
@@ -52,6 +52,7 @@ implementation 'com.kongzue.banner:basebanner:1.0.1'
     android:id="@+id/simpleBanner"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    app:indicatorVisibility="true"
     app:indicatorNormal="@drawable/rect_white_alpha50"
     app:indicatorFocus="@drawable/rect_white_alpha90"
     app:indicatorGravity="center">
@@ -62,6 +63,7 @@ implementation 'com.kongzue.banner:basebanner:1.0.1'
 
 字段 | 含义 | 默认值
 ---|---|---
+indicatorVisibility  | 是否显示指示器  | true
 indicatorNormal  | 指示器普通情况下的样式  | 半透明白色小圆点(R.drawable.rect_white_alpha50)
 indicatorFocus  | 指示器焦点情况下的样式  | 白色小圆点(R.drawable.rect_white_alpha90)
 indicatorGravity | 指示器所处位置  | 默认center(可选left, center, right)
@@ -104,6 +106,7 @@ simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
     android:id="@+id/customBanner"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    app:indicatorVisibility="true"
     app:indicatorNormal="@drawable/rect_white_alpha50"
     app:indicatorFocus="@drawable/rect_white_alpha90"
     app:indicatorGravity="right">
@@ -174,6 +177,9 @@ limitations under the License.
 ```
 
 ## 更新日志
+v1.0.3:
+- 新增 indicatorVisibility 属性控制指示器是否显示；
+
 v1.0.2:
 - 新增回调参数 index，该值为数据下标；
 

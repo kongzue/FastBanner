@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         imageUrls.add("http://kongzue.com/test/fs/3.jpg");
         simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
             @Override
-            public void bind(String url, SimpleDraweeView imageView) {
+            public void bind(String url, SimpleDraweeView imageView, int index) {
                 imageView.setImageURI(url);
             }
         });
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         bannerData.add(data);
         customBanner.setData(bannerData, R.layout.item_banner, new CustomBanner.BindView<Map<String,String>>() {
             @Override
-            public void bind(Map<String, String> data, View rootView) {
+            public void bind(Map<String, String> data, View rootView, int index) {
                 SimpleDraweeView imgBkg = rootView.findViewById(R.id.img_bkg);
                 TextView txtTitle = rootView.findViewById(R.id.txt_title);
                 TextView txtAddress = rootView.findViewById(R.id.txt_address);

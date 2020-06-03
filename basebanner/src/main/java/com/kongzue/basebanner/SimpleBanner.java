@@ -40,6 +40,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     public static final int GRAVITY_RIGHT = 2;                              //居右
     private int indicatorGravity = GRAVITY_CENTER;                          //指示器对齐方式
     private int indicatorMargin = 15;                                       //指示器与边框的距离（单位：dp）
+    private boolean indicatorVisibility = true;                             //指示器可见性
     
     private int indicatorFocusResId;
     private int indicatorNormalResId;
@@ -85,6 +86,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private void loadAttrs(AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        indicatorVisibility = typedArray.getBoolean(R.styleable.Banner_indicatorVisibility, true);
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
         indicatorGravity = typedArray.getInt(R.styleable.Banner_indicatorGravity, GRAVITY_CENTER);
@@ -115,13 +117,13 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private void initPages() {
         views = new ArrayList<>();
-        addItem(imageUrls.get(imageUrls.size() - 1),imageUrls.size() - 1);
-        int i=0;
+        addItem(imageUrls.get(imageUrls.size() - 1), imageUrls.size() - 1);
+        int i = 0;
         for (String url : imageUrls) {
-            addItem(url,i);
+            addItem(url, i);
             i++;
         }
-        addItem(imageUrls.get(0),0);
+        addItem(imageUrls.get(0), 0);
         bannerPagerAdapter = new BannerPagerAdapter(views);
         viewPager.setAdapter(bannerPagerAdapter);
         
@@ -172,6 +174,9 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private List<ImageView> indicatorImageViews;
     
     private void initIndicator() {
+        if (!indicatorVisibility){
+            return;
+        }
         indicatorBox = new LinearLayout(context);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -219,7 +224,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         }
     }
     
-    private void addItem(String url,int index) {
+    private void addItem(String url, int index) {
         V item;
         try {
             Constructor con = bindData.getEntityClass().getConstructor(Context.class);
@@ -229,7 +234,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             return;
         }
         if (item != null) {
-            bindData.bind(url, item,index);
+            bindData.bind(url, item, index);
             views.add(item);
         }
     }
@@ -303,7 +308,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public abstract static class BindData<V> {
         
-        public abstract void bind(String url, V imageView,int index);
+        public abstract void bind(String url, V imageView, int index);
         
         public Class<V> getEntityClass() {
             Type type = getClass().getGenericSuperclass();
@@ -322,6 +327,15 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public SimpleBanner setIndicatorMargin(int indicatorMarginInPx) {
         this.indicatorMargin = indicatorMargin;
+        return this;
+    }
+    
+    public boolean isIndicatorVisibility() {
+        return indicatorVisibility;
+    }
+    
+    public SimpleBanner<V> setIndicatorVisibility(boolean indicatorVisibility) {
+        this.indicatorVisibility = indicatorVisibility;
         return this;
     }
 }

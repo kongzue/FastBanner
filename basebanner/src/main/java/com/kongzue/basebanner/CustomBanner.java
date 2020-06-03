@@ -36,6 +36,7 @@ public class CustomBanner<D> extends RelativeLayout {
     public static final int GRAVITY_RIGHT = 2;                              //居右
     private int indicatorGravity = GRAVITY_CENTER;                          //指示器对齐方式
     private int indicatorMargin = 15;                                       //指示器与边框的距离（单位：dp）
+    private boolean indicatorVisibility = true;                             //指示器可见性
     
     private int indicatorFocusResId;
     private int indicatorNormalResId;
@@ -106,6 +107,7 @@ public class CustomBanner<D> extends RelativeLayout {
     
     private void loadAttrs(AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        indicatorVisibility = typedArray.getBoolean(R.styleable.Banner_indicatorVisibility, true);
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
         indicatorGravity = typedArray.getInt(R.styleable.Banner_indicatorGravity, GRAVITY_CENTER);
@@ -178,6 +180,9 @@ public class CustomBanner<D> extends RelativeLayout {
     private List<ImageView> indicatorImageViews;
     
     private void initIndicator() {
+        if (!indicatorVisibility){
+            return;
+        }
         indicatorBox = new LinearLayout(context);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -316,6 +321,15 @@ public class CustomBanner<D> extends RelativeLayout {
     
     public CustomBanner setIndicatorMargin(int indicatorMarginInPx) {
         this.indicatorMargin = indicatorMargin;
+        return this;
+    }
+    
+    public boolean isIndicatorVisibility() {
+        return indicatorVisibility;
+    }
+    
+    public CustomBanner<D> setIndicatorVisibility(boolean indicatorVisibility) {
+        this.indicatorVisibility = indicatorVisibility;
         return this;
     }
 }
