@@ -52,11 +52,20 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private Handler mainHandler = new Handler(Looper.getMainLooper());      //主线程
     
-    private Context context;
     private ViewPager viewPager;
     private List<String> imageUrls;
     private LinearLayout indicatorBox;
     private BindData<V> bindData;                                                  //数据绑定器
+    private Runnable nextRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int nextPageIndex = nowPageIndex + 1;
+            if (nextPageIndex >= views.size()) {
+                nextPageIndex = 0;
+            }
+            viewPager.setCurrentItem(nextPageIndex);
+        }
+    };
     
     public void setData(List<String> imageUrls, BindData<V> bindData) {
         this.imageUrls = imageUrls;
@@ -66,26 +75,23 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public SimpleBanner(Context context) {
         super(context);
-        this.context = context;
         init();
     }
     
     public SimpleBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
         loadAttrs(attrs);
         init();
     }
     
     public SimpleBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
         loadAttrs(attrs);
         init();
     }
     
     private void loadAttrs(AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.Banner);
         indicatorVisibility = typedArray.getBoolean(R.styleable.Banner_indicatorVisibility, true);
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
@@ -101,7 +107,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         
         if (imageUrls != null) {
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            viewPager = new ViewPager(context);
+            viewPager = new ViewPager(getContext());
             viewPager.setLayoutParams(lp);
             viewPager.setOverScrollMode(OVER_SCROLL_NEVER);
             addView(viewPager);
@@ -174,10 +180,10 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private List<ImageView> indicatorImageViews;
     
     private void initIndicator() {
-        if (!indicatorVisibility){
+        if (!indicatorVisibility) {
             return;
         }
-        indicatorBox = new LinearLayout(context);
+        indicatorBox = new LinearLayout(getContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         
@@ -201,7 +207,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         
         indicatorImageViews = new ArrayList<>();
         for (int i = 0; i < imageUrls.size(); i++) {
-            ImageView imageView = new ImageView(context);
+            ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(dip2px(8), dip2px(8));
             itemLp.setMargins(dip2px(10), 0, 0, 0);
             imageView.setLayoutParams(itemLp);
@@ -228,7 +234,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         V item;
         try {
             Constructor con = bindData.getEntityClass().getConstructor(Context.class);
-            item = (V) con.newInstance(context);
+            item = (V) con.newInstance(getContext());
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -278,16 +284,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int nextPageIndex = nowPageIndex + 1;
-                        if (nextPageIndex >= views.size()) {
-                            nextPageIndex = 0;
-                        }
-                        viewPager.setCurrentItem(nextPageIndex);
-                    }
-                });
+                mainHandler.post(nextRunnable);
             }
         }, DELAY, PERIOD);
     }
@@ -337,5 +334,12 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     public SimpleBanner<V> setIndicatorVisibility(boolean indicatorVisibility) {
         this.indicatorVisibility = indicatorVisibility;
         return this;
+    }
+    
+    @Override
+    protected void onDetachedFromWindow() {
+        if (timer != null) timer.cancel();
+        if (mainHandler != null && nextRunnable != null) mainHandler.removeCallbacks(nextRunnable);
+        super.onDetachedFromWindow();
     }
 }

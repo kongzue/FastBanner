@@ -48,12 +48,21 @@ public class CustomBanner<D> extends RelativeLayout {
     
     private Handler mainHandler = new Handler(Looper.getMainLooper());      //主线程
     
-    private Context context;
     private ViewPager viewPager;
     private List<D> datas;
     private LinearLayout indicatorBox;
     private int customLayoutResId;                                            //用户自定义布局资源id
     private BindView bindView;                                              //布局组件绑定器
+    private Runnable nextRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int nextPageIndex = nowPageIndex + 1;
+            if (nextPageIndex >= views.size()) {
+                nextPageIndex = 0;
+            }
+            viewPager.setCurrentItem(nextPageIndex);
+        }
+    };
     
     //使用以下方法启动CustomBanner
     public void setData(List<D> datas, int layoutId, BindView bindView) {
@@ -72,20 +81,17 @@ public class CustomBanner<D> extends RelativeLayout {
     //系统构造方法
     public CustomBanner(Context context) {
         super(context);
-        this.context = context;
         init();
     }
     
     public CustomBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
         loadAttrs(attrs);
         init();
     }
     
     public CustomBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
         loadAttrs(attrs);
         init();
     }
@@ -95,7 +101,7 @@ public class CustomBanner<D> extends RelativeLayout {
         
         if (datas != null) {
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            viewPager = new ViewPager(context);
+            viewPager = new ViewPager(getContext());
             viewPager.setLayoutParams(lp);
             viewPager.setOverScrollMode(OVER_SCROLL_NEVER);
             addView(viewPager);
@@ -106,7 +112,7 @@ public class CustomBanner<D> extends RelativeLayout {
     }
     
     private void loadAttrs(AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Banner);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.Banner);
         indicatorVisibility = typedArray.getBoolean(R.styleable.Banner_indicatorVisibility, true);
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
@@ -183,7 +189,7 @@ public class CustomBanner<D> extends RelativeLayout {
         if (!indicatorVisibility){
             return;
         }
-        indicatorBox = new LinearLayout(context);
+        indicatorBox = new LinearLayout(getContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         
@@ -207,7 +213,7 @@ public class CustomBanner<D> extends RelativeLayout {
         
         indicatorImageViews = new ArrayList<>();
         for (int i = 0; i < datas.size(); i++) {
-            ImageView imageView = new ImageView(context);
+            ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(dip2px(8), dip2px(8));
             itemLp.setMargins(dip2px(10), 0, 0, 0);
             imageView.setLayoutParams(itemLp);
@@ -231,7 +237,7 @@ public class CustomBanner<D> extends RelativeLayout {
     }
     
     private void addItem(D data, int index) {
-        View item = LayoutInflater.from(context).inflate(customLayoutResId, null, false);
+        View item = LayoutInflater.from(getContext()).inflate(customLayoutResId, null, false);
         if (item != null) {
             bindView.bind(data, item, index);
             views.add(item);
@@ -277,16 +283,7 @@ public class CustomBanner<D> extends RelativeLayout {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int nextPageIndex = nowPageIndex + 1;
-                        if (nextPageIndex >= views.size()) {
-                            nextPageIndex = 0;
-                        }
-                        viewPager.setCurrentItem(nextPageIndex);
-                    }
-                });
+                mainHandler.post(nextRunnable);
             }
         }, DELAY, PERIOD);
     }
@@ -331,5 +328,12 @@ public class CustomBanner<D> extends RelativeLayout {
     public CustomBanner<D> setIndicatorVisibility(boolean indicatorVisibility) {
         this.indicatorVisibility = indicatorVisibility;
         return this;
+    }
+    
+    @Override
+    protected void onDetachedFromWindow() {
+        if (timer != null) timer.cancel();
+        if (mainHandler != null && nextRunnable != null) mainHandler.removeCallbacks(nextRunnable);
+        super.onDetachedFromWindow();
     }
 }
