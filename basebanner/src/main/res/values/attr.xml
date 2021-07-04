@@ -4,6 +4,8 @@
         <attr name="indicatorVisibility" format="boolean"/>
         <attr name="indicatorFocus" format="reference"/>
         <attr name="indicatorNormal" format="reference"/>
+        <attr name="indicatorWidth" format="dimension"/>
+        <attr name="indicatorHeight" format="dimension"/>
         <attr name="indicatorGravity">
             <enum name="center" value="0"/>
             <enum name="left" value="1"/>

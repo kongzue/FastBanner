@@ -42,6 +42,8 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private int indicatorFocusResId;
     private int indicatorNormalResId;
+    private int indicatorWidth = dip2px(8);
+    private int indicatorHeight = dip2px(8);
     
     private int DELAY = 4000;                                               //自动轮播延时（单位：毫秒）
     private int PERIOD = 4000;                                              //自动轮播周期（单位：毫秒）
@@ -93,6 +95,8 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         indicatorVisibility = typedArray.getBoolean(R.styleable.Banner_indicatorVisibility, true);
         indicatorFocusResId = typedArray.getResourceId(R.styleable.Banner_indicatorFocus, R.drawable.rect_white_alpha90);
         indicatorNormalResId = typedArray.getResourceId(R.styleable.Banner_indicatorNormal, R.drawable.rect_white_alpha50);
+        indicatorWidth = typedArray.getDimensionPixelSize(R.styleable.Banner_indicatorWidth, dip2px(8));
+        indicatorHeight = typedArray.getDimensionPixelSize(R.styleable.Banner_indicatorHeight, dip2px(8));
         indicatorGravity = typedArray.getInt(R.styleable.Banner_indicatorGravity, GRAVITY_CENTER);
         indicatorMargin = typedArray.getDimensionPixelOffset(R.styleable.Banner_indicatorMargin, dip2px(15));
         DELAY = typedArray.getInt(R.styleable.Banner_delay, 4000);
@@ -208,7 +212,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         indicatorImageViews = new ArrayList<>();
         for (int i = 0; i < imageUrls.size(); i++) {
             ImageView imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(dip2px(8), dip2px(8));
+            LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(indicatorWidth, indicatorHeight);
             itemLp.setMargins(dip2px(10), 0, 0, 0);
             imageView.setLayoutParams(itemLp);
             imageView.setImageResource(indicatorNormalResId);
@@ -216,6 +220,10 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             indicatorBox.addView(imageView);
         }
         setIndicatorFocus(1);
+    }
+    
+    public LinearLayout getIndicatorBox() {
+        return indicatorBox;
     }
     
     private void setIndicatorFocus(int index) {
@@ -341,5 +349,13 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         if (timer != null) timer.cancel();
         if (mainHandler != null && nextRunnable != null) mainHandler.removeCallbacks(nextRunnable);
         super.onDetachedFromWindow();
+    }
+    
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
+    
+    public BannerPagerAdapter getBannerPagerAdapter() {
+        return bannerPagerAdapter;
     }
 }
