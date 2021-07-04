@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,13 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -123,11 +121,13 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private void initPages() {
         views = new ArrayList<>();
-        addItem(imageUrls.get(imageUrls.size() - 1), imageUrls.size() - 1);
-        int i = 0;
-        for (String url : imageUrls) {
-            addItem(url, i);
-            i++;
+        if (imageUrls.size() > 1) {
+            addItem(imageUrls.get(imageUrls.size() - 1), imageUrls.size() - 1);
+            int i = 0;
+            for (String url : imageUrls) {
+                addItem(url, i);
+                i++;
+            }
         }
         addItem(imageUrls.get(0), 0);
         bannerPagerAdapter = new BannerPagerAdapter(views);
@@ -278,7 +278,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private Timer timer;
     
     public void startAutoPlay() {
-        if (!autoPlay) return;
+        if (!autoPlay || imageUrls == null || imageUrls.size() <= 1) return;
         if (timer != null) timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
