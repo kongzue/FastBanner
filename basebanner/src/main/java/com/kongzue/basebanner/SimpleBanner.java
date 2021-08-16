@@ -184,9 +184,11 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private List<ImageView> indicatorImageViews;
     
     private void initIndicator() {
-        if (!indicatorVisibility) {
+        if (!indicatorVisibility || imageUrls == null || imageUrls.size() <= 1) {
+            if (indicatorBox != null) removeView(indicatorBox);
             return;
         }
+        if (indicatorBox != null) removeView(indicatorBox);
         indicatorBox = new LinearLayout(getContext());
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -327,11 +329,13 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public SimpleBanner setIndicatorGravity(int indicatorGravity) {
         this.indicatorGravity = indicatorGravity;
+        invalidate();
         return this;
     }
     
     public SimpleBanner setIndicatorMargin(int indicatorMarginInPx) {
         this.indicatorMargin = indicatorMargin;
+        invalidate();
         return this;
     }
     
@@ -341,6 +345,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     public SimpleBanner<V> setIndicatorVisibility(boolean indicatorVisibility) {
         this.indicatorVisibility = indicatorVisibility;
+        invalidate();
         return this;
     }
     
