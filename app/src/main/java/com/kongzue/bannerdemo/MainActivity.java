@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     
-    private SimpleBanner<SimpleDraweeView> simpleBanner;
+    private SimpleBanner<SimpleDraweeView,String> simpleBanner;
     private CustomBanner customBanner;
     
     @Override
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         imageUrls.add("http://kongzue.com/test/fs/1.jpg");
         imageUrls.add("http://kongzue.com/test/fs/2.jpg");
         imageUrls.add("http://kongzue.com/test/fs/3.jpg");
-        simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
+        simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView,String>(){
             @Override
             public void bind(String url, SimpleDraweeView imageView, int index) {
                 imageView.setImageURI(url);

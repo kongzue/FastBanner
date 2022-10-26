@@ -85,7 +85,7 @@ imageUrls.add("http://example.com/test/fs/2.jpg");
 imageUrls.add("http://example.com/test/fs/3.jpg");
 
 //绑定数据
-simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView>(){
+simpleBanner.setData(imageUrls, new SimpleBanner.BindData<SimpleDraweeView, String>(){
     @Override
     public void bind(String url, SimpleDraweeView imageView, int index) {
         imageView.setImageURI(url);
@@ -177,6 +177,10 @@ limitations under the License.
 ```
 
 ## 更新日志
+
+v1.0.6:
+- SimpleBanner 支持自定义数据类型（请在泛型定义）；
+
 v1.0.4:
 - 内存泄漏问题修复；
 

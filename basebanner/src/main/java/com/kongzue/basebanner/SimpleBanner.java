@@ -31,7 +31,7 @@ import java.util.TimerTask;
  * Mail: myzcxhh@live.cn
  * CreateTime: 2019/3/6 12:49
  */
-public class SimpleBanner<V extends View> extends RelativeLayout {
+public class SimpleBanner<V extends View, D> extends RelativeLayout {
     
     public static final int GRAVITY_CENTER = 0;                             //居中
     public static final int GRAVITY_LEFT = 1;                               //居左
@@ -53,9 +53,9 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private Handler mainHandler = new Handler(Looper.getMainLooper());      //主线程
     
     private ViewPager viewPager;
-    private List<String> imageUrls;
+    private List dataList;
     private LinearLayout indicatorBox;
-    private BindData<V> bindData;                                                  //数据绑定器
+    private BindData<V, D> bindData;                                                  //数据绑定器
     private Runnable nextRunnable = new Runnable() {
         @Override
         public void run() {
@@ -67,8 +67,8 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         }
     };
     
-    public void setData(List<String> imageUrls, BindData<V> bindData) {
-        this.imageUrls = imageUrls;
+    public void setData(List dataList, BindData<V, D> bindData) {
+        this.dataList = dataList;
         this.bindData = bindData;
         init();
     }
@@ -107,7 +107,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private void init() {
         removeAllViews();
         
-        if (imageUrls != null) {
+        if (dataList != null) {
             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
             viewPager = new ViewPager(getContext());
             viewPager.setLayoutParams(lp);
@@ -125,15 +125,16 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     
     private void initPages() {
         views = new ArrayList<>();
-        if (imageUrls.size() > 1) {
-            addItem(imageUrls.get(imageUrls.size() - 1), imageUrls.size() - 1);
-            int i = 0;
-            for (String url : imageUrls) {
-                addItem(url, i);
+        if (dataList.size() > 1) {
+            addItem((D) dataList.get(dataList.size() - 1), dataList.size() - 1);
+            
+            for (int i = 0; i < dataList.size(); i++) {
+                D data = (D) dataList.get(i);
+                addItem(data, i);
                 i++;
             }
         }
-        addItem(imageUrls.get(0), 0);
+        addItem((D) dataList.get(0), 0);
         bannerPagerAdapter = new BannerPagerAdapter(views);
         viewPager.setAdapter(bannerPagerAdapter);
         
@@ -184,7 +185,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private List<ImageView> indicatorImageViews;
     
     private void initIndicator() {
-        if (!indicatorVisibility || imageUrls == null || imageUrls.size() <= 1) {
+        if (!indicatorVisibility || dataList == null || dataList.size() <= 1) {
             if (indicatorBox != null) removeView(indicatorBox);
             return;
         }
@@ -212,7 +213,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         addView(indicatorBox);
         
         indicatorImageViews = new ArrayList<>();
-        for (int i = 0; i < imageUrls.size(); i++) {
+        for (int i = 0; i < dataList.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             LinearLayout.LayoutParams itemLp = new LinearLayout.LayoutParams(indicatorWidth, indicatorHeight);
             itemLp.setMargins(dip2px(10), 0, 0, 0);
@@ -240,7 +241,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         }
     }
     
-    private void addItem(String url, int index) {
+    private void addItem(D data, int index) {
         V item;
         try {
             Constructor con = bindData.getEntityClass().getConstructor(Context.class);
@@ -250,7 +251,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
             return;
         }
         if (item != null) {
-            bindData.bind(url, item, index);
+            bindData.bind(data, item, index);
             views.add(item);
         }
     }
@@ -288,7 +289,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
     private Timer timer;
     
     public void startAutoPlay() {
-        if (!autoPlay || imageUrls == null || imageUrls.size() <= 1) return;
+        if (!autoPlay || dataList == null || dataList.size() <= 1) return;
         if (timer != null) timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -313,9 +314,9 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         return this;
     }
     
-    public abstract static class BindData<V> {
+    public abstract static class BindData<V, D> {
         
-        public abstract void bind(String url, V imageView, int index);
+        public abstract void bind(D data, V imageView, int index);
         
         public Class<V> getEntityClass() {
             Type type = getClass().getGenericSuperclass();
@@ -343,7 +344,7 @@ public class SimpleBanner<V extends View> extends RelativeLayout {
         return indicatorVisibility;
     }
     
-    public SimpleBanner<V> setIndicatorVisibility(boolean indicatorVisibility) {
+    public SimpleBanner<V, D> setIndicatorVisibility(boolean indicatorVisibility) {
         this.indicatorVisibility = indicatorVisibility;
         invalidate();
         return this;
