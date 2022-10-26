@@ -30,20 +30,20 @@ Demo下载地址：
 
 ## 使用方法
 
-1) 从 Maven 仓库或 jCenter 引入：
+1) 在 build.gradle 配置添加 Jitpack：
 Maven仓库：
 ```
-<dependency>
-  <groupId>com.kongzue.banner</groupId>
-  <artifactId>basebanner</artifactId>
-  <version>1.0.4</version>
-  <type>pom</type>
-</dependency>
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 Gradle：
 在dependencies{}中添加引用：
 ```
-implementation 'com.kongzue.banner:basebanner:1.0.4'
+implementation 'com.github.kongzue:FastBanner:1.0.6'
 ```
 
 2) 从XML布局文件创建：
