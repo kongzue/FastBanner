@@ -9,6 +9,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,9 @@ import java.util.TimerTask;
  * CreateTime: 2019/3/6 12:49
  */
 public class SimpleBanner<V extends View, D> extends RelativeLayout {
+
+    private static final String TAG = "SimpleBanner";
+    public static boolean DEBUGMODE;
     
     public static final int GRAVITY_CENTER = 0;                             //居中
     public static final int GRAVITY_LEFT = 1;                               //居左
@@ -131,7 +135,6 @@ public class SimpleBanner<V extends View, D> extends RelativeLayout {
             for (int i = 0; i < dataList.size(); i++) {
                 D data = (D) dataList.get(i);
                 addItem(data, i);
-                i++;
             }
         }
         addItem((D) dataList.get(0), 0);
@@ -242,6 +245,9 @@ public class SimpleBanner<V extends View, D> extends RelativeLayout {
     }
     
     private void addItem(D data, int index) {
+        if (DEBUGMODE){
+            Log.i(TAG, "addItem: " + data+" index: "+index);
+        }
         V item;
         try {
             Constructor con = bindData.getEntityClass().getConstructor(Context.class);
