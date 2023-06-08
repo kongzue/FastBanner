@@ -325,12 +325,18 @@ public class SimpleBanner<V extends View, D> extends RelativeLayout {
         public abstract void bind(D data, V imageView, int index);
         
         public Class<V> getEntityClass() {
-            Type type = getClass().getGenericSuperclass();
-            ParameterizedType pType = (ParameterizedType) type;
-            Type[] params = pType.getActualTypeArguments();
-            @SuppressWarnings("unchecked")
-            Class<V> c = (Class<V>) params[0];
-            return c;
+            Type genType = getClass().getGenericSuperclass();
+            if (!(genType instanceof ParameterizedType)) {
+                return (Class<V>) Object.class;
+            }
+            Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+            if (0 >= params.length || 0 < 0) {
+                return (Class<V>) Object.class;
+            }
+            if (!(params[0] instanceof Class)) {
+                return (Class<V>) Object.class;
+            }
+            return (Class) params[0];
         }
     }
     
